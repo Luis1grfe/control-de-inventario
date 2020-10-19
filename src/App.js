@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery'; import 'popper.js'; import 'bootstrap';
+import './app.css'
+import { BrowserRouter, Switch, Route } from "react-router-dom"
+import Navbar from './components/Navbar';
+import Home from './view/home';
+import Carousel from './components/Carousel';
+import Cotizante from "./view/cotizante";
+import Footer from './components/Footer';
+import injectContext from "./store/appContext"
+import Control from './view/Control';
+import Inventario from './view/controlInventario';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <Navbar />
+        
+        <Switch>
+        <Route exact path="/" component={Home} />
+          <Route exact path="/rutacotizante" component={Cotizante} />
+          <Route exact path="/controlinventario" component={Inventario} />
+        </Switch>
+        <Footer />
+      </BrowserRouter>
+    </>
   );
 }
 
-export default App;
+export default injectContext(App);
