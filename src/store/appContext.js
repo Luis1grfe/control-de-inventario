@@ -29,7 +29,7 @@ const injectContext = PassedComponent => {
 			 *
 			 **/
             
-			
+			state.actions.obtenerinventario()
           
             
 

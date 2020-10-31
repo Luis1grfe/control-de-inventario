@@ -3,8 +3,8 @@ import { Link } from "react-router-dom"
 
 const Navbar = () => {
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a className="navbar-brand" href="#">Final Project</a>
+        <nav className="navbar navbar-expand-lg navbar-light">
+            <a className="navbar-brand" href="#"><img src={"../img/logosuperior" + ".PNG"} width="65" height="65" className="img-fluid" alt="...imagen..."></img><strong>Control de Inventario</strong></a>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -22,11 +22,14 @@ const Navbar = () => {
                     <li className="nav-item">
                         <Link className="nav-link" to="/rutacotizante">Cotizador</Link>
                     </li>
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                         <Link className="nav-link" to="/controlinventario">Control Inventario</Link>
+                    </li> */}
+                    <li className="nav-item">
+                        <Link className="nav-link" to="#">Contactanos</Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Contactanos</a>
+                        <Link className="nav-link" to="/login">Login</Link>
                     </li>
                 </ul>
             </div>
