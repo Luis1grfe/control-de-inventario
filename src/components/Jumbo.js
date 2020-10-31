@@ -3,12 +3,13 @@ import React from 'react';
 const Jumbo = () => {
     return (
         <div className="jumbotron">
-            <h1 className="display-4">Hello, world!</h1>
-            <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+            <h1 className="display-4">Control de Inventario PET</h1>
+            <p className="lead">Aplicacion para cuantificar la cadena de suministro de agua embotellada PET.</p>
             <hr className="my-4"></hr>
-            <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+            <p>Realizacion de cotizacion, control de pedidos, visualizacion de materia prima, control de inventario, 
+                actualizacion de precios, cantidad de stock y produccion. Menos desabastecimiento y mayor ganancias.</p>
             <p className="lead">
-                <a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+                <a className="btn btn-primary btn-lg" href="#" role="button">Cotizardor</a>
             </p>
         </div>
     );
