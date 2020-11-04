@@ -6,6 +6,8 @@ import swal from 'sweetalert';
 const getState = ({ getStore, getActions, setStore }) => {
     return {
         store: {
+            prima: [],
+            inventario: [],
             cotizante: null,
             nombre: "",
             apellido: "",
@@ -60,6 +62,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         actions: {
             // son funciones, no tiene const y usa :, es separado por comas... Ademas, debo llamarlas con actions.funcion
+            listarPrima() {
+                const store = getStore();
+                fetch('https://3000-a6db94ad-7f6f-46cd-a7b7-f9a7f1df8d51.ws-us02.gitpod.io/list')
+                .then((resp) => resp.json())
+                .then(datos => setStore( {prima: datos}))
+            },
+
+            listarInventario() {
+                const store = getStore();
+                fetch('https://3000-a6db94ad-7f6f-46cd-a7b7-f9a7f1df8d51.ws-us02.gitpod.io/inventario')
+                .then((resp) => resp.json())
+                .then(datos => setStore( {inventario: datos}))
+            },
+
+            deleteInventario(i) {
+                console.log(i)
+                let id = i+1;
+                console.log(id);
+                const store = getStore();
+                fetch('https://3000-a6db94ad-7f6f-46cd-a7b7-f9a7f1df8d51.ws-us02.gitpod.io/deleteinventario'+id,{
+                    method: "DELETE",
+                    header: {'Accept':'application/json',
+                    'Content-Type':'application/json'
+                    }
+                })
+                .then(resp=>resp.json())
+                .then(data=>console.log(data))
+                .cath(error=>console.log(error))
+            },
 
             alertaLimpiar: (e) => {
                 e.preventDefault()
