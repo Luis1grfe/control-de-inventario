@@ -29,7 +29,9 @@ const injectContext = PassedComponent => {
 			 *
 			 **/
             
-			state.actions.obtenerinventario()
+			state.actions.obtenerinventario();
+			state.actions.listarPrima();
+			state.actions.listarInventario();
           
             
 

@@ -1,8 +1,17 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import TablaPeq from '../components/tablaPeq'
 import { Context } from "../store/appContext"
 
 const Inventario = () => {
+    const [prima, setPrima] = useState([])
+
+    useEffect(() => {
+    fetch('https://3000-a6db94ad-7f6f-46cd-a7b7-f9a7f1df8d51.ws-us02.gitpod.io/list')
+      .then((resp) => resp.json())
+      .then(datos =>
+        setPrima(datos))
+    }, [])
+
     const { store, actions } = useContext(Context)
     const [state, setState] = useState(false)
 
@@ -127,12 +136,6 @@ const Inventario = () => {
 
                                     {/* <h1>Materia Prima</h1> */}
 
-
-
-
-
-
-
                                     <table className="table table-bordered">
                                         <thead>
                                             <tr>
@@ -150,16 +153,16 @@ const Inventario = () => {
 
                                         <tbody>
                                             {
-                                                store.inventario !== null &&
-                                                store.inventario.map((prod, i) => {
+                                                store.prima !== null &&
+                                                store.prima.map((prod, i) => {
                                                     return (
                                                         <tr key={i}>
                                                             <th scope="row" className="text-center">{i + 1}</th>
-                                                            <td>{prod.skuinventario} </td>
-                                                            <td>{prod.productoinventario}</td>
-                                                            <td>{prod.paletainventario}</td>
-                                                            <td>{prod.cantidadinventario}</td>
-                                                            <td>{prod.precioinventario}</td>
+                                                            <td>{prod.sku} </td>
+                                                            <td>{prod.name}</td>
+                                                            <td>{prod.cajas}</td>
+                                                            <td>{prod.cantidad}</td>
+                                                            <td>{prod.precio}</td>
 
 
                                                         </tr>
@@ -232,14 +235,14 @@ const Inventario = () => {
                                                 <td>
                                                     <form>
                                                         <div className="form-group">
-                                                            <input className="form-control" value={store.skuinventario} name="skuinventario" type="text" placeholder="SKU" onChange={(e) => actions.capturaCampos(e)} />
+                                                            <input className="form-control" value={store.sku} name="sku" type="text" placeholder="SKU" onChange={(e) => actions.capturaCampos(e)} />
                                                         </div>
                                                     </form>
                                                 </td>
                                                 <td>
                                                     <form>
                                                         <div className="form-group">
-                                                            <input className="form-control" value={store.productoinventario} name="productoinventario" type="text" placeholder="Producto" onChange={(e) => actions.capturaCampos(e)} />
+                                                            <input className="form-control" value={store.producto} name="producto" type="text" placeholder="Producto" onChange={(e) => actions.capturaCampos(e)} />
                                                         </div>
                                                     </form>
                                                 </td>
@@ -257,7 +260,7 @@ const Inventario = () => {
 
                                                 <td>
                                                     <div className="input-group is-invalid">
-                                                        <input type="number" placeholder="Paleta" step="1" min="1" max="999" value={store.paletainventario} name="paletainventario" className="form-control" id="validationServer01" onChange={(e) => actions.capturaCampos(e)} />
+                                                        <input type="number" placeholder="Paleta" step="1" min="1" max="999" value={store.caja} name="caja" className="form-control" id="validationServer01" onChange={(e) => actions.capturaCampos(e)} />
 
                                                     </div>
                                                 </td>
@@ -266,7 +269,7 @@ const Inventario = () => {
                                                 <td>
                                                     <form>
                                                         <div className="form-group">
-                                                            <input className="form-control" value={store.cantidadinventario} name="cantidadinventario" type="text" placeholder="Cantidad" onChange={(e) => actions.capturaCampos(e)} />
+                                                            <input className="form-control" value={store.cantidad} name="cantidad" type="text" placeholder="Cantidad" onChange={(e) => actions.capturaCampos(e)} />
                                                         </div>
                                                     </form>
 
@@ -279,14 +282,14 @@ const Inventario = () => {
 
                                                     <form>
                                                         <div className="form-group">
-                                                            <input className="form-control" value={store.precioinventario} name="precioinventario" type="text" placeholder="Precio" onChange={(e) => actions.capturaCampos(e)} />
+                                                            <input className="form-control" value={store.precio} name="precio" type="text" placeholder="Precio" onChange={(e) => actions.capturaCampos(e)} />
                                                         </div>
                                                     </form>
                                                 </td>
 
                                                 <td> <form>
                                                         <div className="form-group">
-                                                            <input className="form-control" value={store.fechainventario} name="fechainventario" type="text" placeholder="Fecha" onChange={(e) => actions.capturaCampos(e)} />
+                                                            <input className="form-control" value={store.fecha} name="fecha" type="text" placeholder="Fecha" onChange={(e) => actions.capturaCampos(e)} />
                                                         </div>
                                                     </form></td>
 
@@ -303,14 +306,14 @@ const Inventario = () => {
                                                 return (
                                                     <tr key={i}>
                                                         <th scope="row" className="text-center">{i + 1}</th>
-                                                        <td>{prod.skuinventario} </td>
-                                                        <td>{prod.productoinventario}</td>
-                                                        <td>{prod.paletainventario}</td>
-                                                        <td>{prod.cantidadinventario}</td>
-                                                        <td>{prod.precioinventario}</td>
-                                                        <td>{prod.fechainventario}</td>
+                                                        <td>{prod.sku} </td>
+                                                        <td>{prod.producto}</td>
+                                                        <td>{prod.caja}</td>
+                                                        <td>{prod.cantidad}</td>
+                                                        <td>{prod.precio}</td>
+                                                        <td>{prod.fecha}</td>
                                                         <td><img src={"../img/editar1" + ".jpg"} width="35" height="35" alt="...imagen..." data-toggle="modal" data-target="#exampleModal" onClick={() => setPosicion(i)}></img></td>
-                                                        <td><img src={"../img/borrar" + ".jpg"} width="35" height="35" alt="...imagen..." onClick={() => actions.borra(i)}></img></td>
+                                                        <td><img src={"../img/borrar" + ".jpg"} width="35" height="35" alt="...imagen..." onClick={(e) => actions.deleteInventario(e,i)}></img></td>
 
                                                         <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div className="modal-dialog" role="document">

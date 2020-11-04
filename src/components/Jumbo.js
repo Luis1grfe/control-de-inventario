@@ -9,7 +9,7 @@ const Jumbo = () => {
             <p>Realizacion de cotizacion, control de pedidos, visualizacion de materia prima, control de inventario, 
                 actualizacion de precios, cantidad de stock y produccion. Menos desabastecimiento y mayor ganancias.</p>
             <p className="lead">
-                <a className="btn btn-primary btn-lg" href="#" role="button">Cotizardor</a>
+                <a className="btn btn-primary btn-lg" href="#" role="button">Cotizador</a>
             </p>
         </div>
     );
