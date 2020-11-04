@@ -76,12 +76,15 @@ const getState = ({ getStore, getActions, setStore }) => {
                 .then(datos => setStore( {inventario: datos}))
             },
 
-            deleteInventario(i) {
+            deleteInventario:(e, i) => {
+                e.preventDefault()
                 console.log(i)
                 let id = i+1;
                 console.log(id);
                 const store = getStore();
-                fetch('https://3000-a6db94ad-7f6f-46cd-a7b7-f9a7f1df8d51.ws-us02.gitpod.io/deleteinventario'+id,{
+                let id_db = store.inventario[i].id
+                console.log(id_db)
+                fetch('https://3000-a6db94ad-7f6f-46cd-a7b7-f9a7f1df8d51.ws-us02.gitpod.io/deleteinventario/'+id_db,{
                     method: "DELETE",
                     header: {'Accept':'application/json',
                     'Content-Type':'application/json'
@@ -89,7 +92,12 @@ const getState = ({ getStore, getActions, setStore }) => {
                 })
                 .then(resp=>resp.json())
                 .then(data=>console.log(data))
-                .cath(error=>console.log(error))
+                .catch(error=>console.log(error))
+                store.datos.splice(i, 1);
+                setStore([...store.datos]);
+                store.inventario.splice(i, 1);
+                setStore([...store.inventario]);
+                localStorage.setItem("Inventario", JSON.stringify(store.inventario))
             },
 
             alertaLimpiar: (e) => {
@@ -352,14 +360,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             agregarProdInventario: (e) => {
                 const store = getStore()
-                const { skuinventario, productoinventario, paletainventario, cantidadinventario, precioinventario, fechainventario } = getStore()
+                const { sku, producto, caja, cantidad, precio, fecha } = getStore()
                 e.preventDefault()
-                if (store.cantidadinventario === "" || store.precioinventario === "" || store.productoinventario === "" || store.skuinventario === "" || store.paletainventario === "" || store.fechainventario === "") {
+                if (store.cantidad === "" || store.precio === "" || store.producto === "" || store.sku === "" || store.caja === "" || store.fecha === "") {
                     swal("Faltan datos!", "Complete los campos para ingresar el producto a inventario!", "error");
                     return;
                 }
                 if (store.inventario !== null) {
-                    if (store.inventario.some((item) => item.skuinventario === store.skuinventario)) {
+                    if (store.inventario.some((item) => item.sku === store.sku)) {
                         swal("Error,", "ya tiene este producto agregado!", "error");
                         return;
                     }
@@ -373,22 +381,40 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({
                     ...store, inventario: [...store.inventario,
                     {
-                        skuinventario: skuinventario,
-                        productoinventario: productoinventario,
-                        paletainventario: paletainventario,
-                        cantidadinventario: cantidadinventario,
-                        precioinventario: precioinventario,
-                        fechainventario: fechainventario,
+                        sku: sku,
+                        producto: producto,
+                        caja: caja,
+                        cantidad: cantidad,
+                        precio: precio,
+                        fecha: fecha,
                     }
                     ],
-                    skuinventario: "",
-                    productoinventario: "",
-                    paletainventario: "",
-                    cantidadinventario: "",
-                    precioinventario: "",
-                    fechainventario: "",
+                    sku: "",
+                    producto: "",
+                    caja: "",
+                    cantidad: "",
+                    precio: "",
+                    fecha: "",
                 })
                 localStorage.setItem("Inventario", JSON.stringify(store.inventario))
+                fetch('https://3000-a6db94ad-7f6f-46cd-a7b7-f9a7f1df8d51.ws-us02.gitpod.io/addinventario',{
+                    method: "POST",
+                    body: JSON.stringify({
+                        sku: sku,
+                        producto: producto,
+                        caja: caja,
+                        cantidad: cantidad,
+                        precio: precio,
+                        fecha: fecha,
+                    }),
+					mode: "no-cors",
+                    header: {'Accept':'application/json',
+                    'Content-Type':'application/json'
+                    }
+                })
+                .then(resp=>resp.json())
+                .then(data=>console.log(data))
+                .catch(error=>console.log(error))
             },
 
 
