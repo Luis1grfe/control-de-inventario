@@ -447,7 +447,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 //     return;
                 // }
 
-                if (store.skuinventarioedi === "" || store.productoinventarioedi === "" || store.cantidadinventarioedi === "" || store.precioinventarioedi === "" || store.paletainventarioedi === "" || store.fechainventarioedi === "") {
+                if (store.skuinventarioedi === "" || store.productoinventarioedi === "" || store.cantidadinventarioedi === "" || store.precioinventarioedi === "" || store.paletainventarioedi === "" || store.fechainventarioedi === "" ) {
                     swal("Faltan datos!", "Complete los campos para ingresar el producto a inventario!", "error");
                     return;
                 }
