@@ -1,18 +1,29 @@
 import React, { useContext, useState, useEffect } from 'react'
 import TablaPeq from '../components/tablaPeq'
 import { Context } from "../store/appContext"
+import Grafico from "../components/grafico"
+import Graficoe from '../components/grafico1'
 
 const Inventario = () => {
-    const [prima, setPrima] = useState([])
-
-    useEffect(() => {
-    fetch('https://3000-a6db94ad-7f6f-46cd-a7b7-f9a7f1df8d51.ws-us02.gitpod.io/list')
-      .then((resp) => resp.json())
-      .then(datos =>
-        setPrima(datos))
-    }, [])
-
     const { store, actions } = useContext(Context)
+
+    const [busqueda, setBusqueda] = useState("");
+    const [resultadoBusqueda, setResultadoBusqueda] = useState([]);
+    const handleChange = e => {
+        setBusqueda(e.target.value);
+    };
+
+
+
+
+
+
+useEffect(() => {
+        if (store.inventario !== null) {
+            const results = store.inventario.filter(item => item.skuinventario.toString().toLowerCase().includes(busqueda));
+            setResultadoBusqueda(results);
+        }
+    }, [store.inventario, busqueda]);
     const [state, setState] = useState(false)
 
     const sumarInventario = () => {
@@ -50,7 +61,6 @@ const Inventario = () => {
                     </div>
                     <div className="tab-content" id="nav-tabContent">
                         <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-
                             <div className="row pt-4">
                                 <div className="col-12">
                                     <div className="carousel mycarousel">
@@ -102,8 +112,8 @@ const Inventario = () => {
                                                                 </td>
 
                                                                 <td>
-                                                                    <img src={"../img/siprocesada" + ".jpg"} width="35" height="35" className="mx-auto d-block" onClick={()=>actions.aceptarCotizacion(i)}></img>
-                                                                    <img src={"../img/noprocesada" + ".jpg"} width="35" height="35" className="mx-auto d-block" onClick={()=>actions.rechazarCotizacion(i)}></img>
+                                                                    <img src={"../img/siprocesada" + ".jpg"} width="35" height="35" className="mx-auto d-block" onClick={() => actions.aceptarCotizacion(i)}></img>
+                                                                    <img src={"../img/noprocesada" + ".jpg"} width="35" height="35" className="mx-auto d-block" onClick={() => actions.rechazarCotizacion(i)}></img>
 
                                                                 </td>
 
@@ -115,7 +125,6 @@ const Inventario = () => {
                                             }
                                         </tbody>
                                     </table>
-
                                     <div>
                                         <img className="d-block w-100" src={"../img/pedidos1" + ".png"} className="rounded mx-auto d-block img-fluid" alt="...imagen..."></img>
                                     </div>
@@ -123,68 +132,82 @@ const Inventario = () => {
                             </div>
                         </div>
                         <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-
                             <div className="row pt-4">
                                 <div className="col-12">
-
                                     <div className="carousel mycarousel">
                                         <img src={"../img/materiaprima" + ".png"} className="img-fluid w-100" alt="imagen"></img>
                                         <div className="carousel-caption d-none d-md-block">
                                             <h1><strong>Materia Prima</strong></h1>
                                         </div>
                                     </div>
-
-                                    {/* <h1>Materia Prima</h1> */}
-
-                                    <table className="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col"><img src={"../img/mp" + ".png"} width="40" height="40" className="mx-auto d-block" alt="...imagen..."></img>
-                                                </th>
-                                                <th scope="col">SKU</th>
-                                                <th scope="col">Producto</th>
-                                                <th scope="col">Cajas</th>
-                                                <th scope="col">Cantidades</th>
-                                                <th scope="col">Precio</th>
-                                            </tr>
-                                        </thead>
-
-
-
-                                        <tbody>
-                                            {
-                                                store.prima !== null &&
-                                                store.prima.map((prod, i) => {
-                                                    return (
-                                                        <tr key={i}>
-                                                            <th scope="row" className="text-center">{i + 1}</th>
-                                                            <td>{prod.sku} </td>
-                                                            <td>{prod.name}</td>
-                                                            <td>{prod.cajas}</td>
-                                                            <td>{prod.cantidad}</td>
-                                                            <td>{prod.precio}</td>
-
-
-                                                        </tr>
-                                                    )
-                                                })
-
-
-                                            }
-
-
-                                        </tbody>
-
-                                    </table>
-                                    {/* L... <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"  aria-controls="nav-contact" aria-selected="false"><i className="fas fa-pencil-alt fa-2x float-right"></i></a> */}
-
-                                    <div>
-                                        <img className="d-block w-100" src={"../img/proceso1" + ".jpg"} className="rounded mx-auto d-block img-fluid" alt="...imagen..."></img>
-                                    </div>
-
-
-
                                 </div>
+                            </div>
+
+                            {/* <h1>Materia Prima</h1> */}
+                            <div className="row justify-content-end pt-4">
+                                <div className="col-md-5">
+                                    <div className="input-group mb-3">
+                                        <input type="text" className="form-control" value={busqueda} placeholder="Busqueda por SKU" onChange={handleChange} />
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div className="col-md-12">
+                                <table className="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"><img src={"../img/mp" + ".png"} width="40" height="40" className="mx-auto d-block" alt="...imagen..."></img>
+                                            </th>
+                                            <th scope="col">SKU</th>
+                                            <th scope="col">Producto</th>
+                                            <th scope="col">Cajas</th>
+                                            <th scope="col">Cantidades</th>
+                                            <th scope="col">Precio</th>
+                                        </tr>
+                                    </thead>
+
+
+
+                                    <tbody>
+                                        {
+                                            store.inventario !== null &&
+                                            resultadoBusqueda.map((prod, i) => {
+                                                return (
+                                                    <tr key={i}>
+                                                        <th scope="row" className="text-center">{i + 1}</th>
+                                                        <td>{prod.skuinventario} </td>
+                                                        <td>{prod.productoinventario}</td>
+                                                        <td>{prod.paletainventario}</td>
+                                                        <td>{prod.cantidadinventario}</td>
+                                                        <td>{prod.precioinventario}</td>
+
+
+                                                    </tr>
+                                                )
+                                            })
+
+
+                                        }
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            {/* L... <a className="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"  aria-controls="nav-contact" aria-selected="false"><i className="fas fa-pencil-alt fa-2x float-right"></i></a> */}
+
+                            <div className="row py-5">
+                                <div className="col-md-6">
+                                    <Grafico />
+                                </div>
+                                <div className="col-md-6">
+                                    <Graficoe />
+                                </div>
+                            </div>
+                            <div>
+                                <img className="d-block w-100" src={"../img/proceso1" + ".jpg"} className="rounded mx-auto d-block img-fluid" alt="...imagen..."></img>
                             </div>
                         </div>
                         <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab"> <div className="row pt-4">
@@ -235,14 +258,14 @@ const Inventario = () => {
                                                 <td>
                                                     <form>
                                                         <div className="form-group">
-                                                            <input className="form-control" value={store.sku} name="sku" type="text" placeholder="SKU" onChange={(e) => actions.capturaCampos(e)} />
+                                                            <input className="form-control" value={store.skuinventario} name="skuinventario" type="text" placeholder="SKU" onChange={(e) => actions.capturaCampos(e)} />
                                                         </div>
                                                     </form>
                                                 </td>
                                                 <td>
                                                     <form>
                                                         <div className="form-group">
-                                                            <input className="form-control" value={store.producto} name="producto" type="text" placeholder="Producto" onChange={(e) => actions.capturaCampos(e)} />
+                                                            <input className="form-control" value={store.productoinventario} name="productoinventario" type="text" placeholder="Producto" onChange={(e) => actions.capturaCampos(e)} />
                                                         </div>
                                                     </form>
                                                 </td>
@@ -260,7 +283,7 @@ const Inventario = () => {
 
                                                 <td>
                                                     <div className="input-group is-invalid">
-                                                        <input type="number" placeholder="Paleta" step="1" min="1" max="999" value={store.caja} name="caja" className="form-control" id="validationServer01" onChange={(e) => actions.capturaCampos(e)} />
+                                                        <input type="number" placeholder="Paleta" step="1" min="1" max="999" value={store.paletainventario} name="paletainventario" className="form-control" id="validationServer01" onChange={(e) => actions.capturaCampos(e)} />
 
                                                     </div>
                                                 </td>
@@ -269,7 +292,7 @@ const Inventario = () => {
                                                 <td>
                                                     <form>
                                                         <div className="form-group">
-                                                            <input className="form-control" value={store.cantidad} name="cantidad" type="text" placeholder="Cantidad" onChange={(e) => actions.capturaCampos(e)} />
+                                                            <input className="form-control" value={store.cantidadinventario} name="cantidadinventario" type="text" placeholder="Cantidad" onChange={(e) => actions.capturaCampos(e)} />
                                                         </div>
                                                     </form>
 
@@ -282,16 +305,16 @@ const Inventario = () => {
 
                                                     <form>
                                                         <div className="form-group">
-                                                            <input className="form-control" value={store.precio} name="precio" type="text" placeholder="Precio" onChange={(e) => actions.capturaCampos(e)} />
+                                                            <input className="form-control" value={store.precioinventario} name="precioinventario" type="text" placeholder="Precio" onChange={(e) => actions.capturaCampos(e)} />
                                                         </div>
                                                     </form>
                                                 </td>
 
                                                 <td> <form>
-                                                        <div className="form-group">
-                                                            <input className="form-control" value={store.fecha} name="fecha" type="text" placeholder="Fecha" onChange={(e) => actions.capturaCampos(e)} />
-                                                        </div>
-                                                    </form></td>
+                                                    <div className="form-group">
+                                                        <input className="form-control" value={store.fechainventario} name="fechainventario" type="text" placeholder="Fecha" onChange={(e) => actions.capturaCampos(e)} />
+                                                    </div>
+                                                </form></td>
 
                                                 <td> <img src={"../img/siprocesada" + ".jpg"} width="35" height="35" alt="...imagen..." onClick={(e) => actions.agregarProdInventario(e)}></img>
                                                 </td>
@@ -306,14 +329,14 @@ const Inventario = () => {
                                                 return (
                                                     <tr key={i}>
                                                         <th scope="row" className="text-center">{i + 1}</th>
-                                                        <td>{prod.sku} </td>
-                                                        <td>{prod.producto}</td>
-                                                        <td>{prod.caja}</td>
-                                                        <td>{prod.cantidad}</td>
-                                                        <td>{prod.precio}</td>
-                                                        <td>{prod.fecha}</td>
+                                                        <td>{prod.skuinventario} </td>
+                                                        <td>{prod.productoinventario}</td>
+                                                        <td>{prod.paletainventario}</td>
+                                                        <td>{prod.cantidadinventario}</td>
+                                                        <td>{prod.precioinventario}</td>
+                                                        <td>{prod.fechainventario}</td>
                                                         <td><img src={"../img/editar1" + ".jpg"} width="35" height="35" alt="...imagen..." data-toggle="modal" data-target="#exampleModal" onClick={() => setPosicion(i)}></img></td>
-                                                        <td><img src={"../img/borrar" + ".jpg"} width="35" height="35" alt="...imagen..." onClick={(e) => actions.deleteInventario(e,i)}></img></td>
+                                                        <td><img src={"../img/borrar" + ".jpg"} width="35" height="35" alt="...imagen..." onClick={() => actions.borra(i)}></img></td>
 
                                                         <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div className="modal-dialog" role="document">
@@ -328,11 +351,7 @@ const Inventario = () => {
                                                                         <form>
                                                                             <div className="form-row">
                                                                                 <div className="col">
-
                                                                                     <th scope="col">SKU</th>
-
-
-
 
 
                                                                                     <input type="text" name="skuinventarioedi" className="form-control" value={store.skuinventarioedi} placeholder={store.inventario[posicion].skuinventario} onChange={(e) => actions.capturaCampos(e)}></input>
@@ -366,11 +385,11 @@ const Inventario = () => {
                                                                                 <div className="col">
                                                                                     <th scope="col">Precio</th>
 
-                                                                                    <input type="text" name="precioinventarioedi" className="form-control" placeholder={store.inventario[posicion].precioinventario} value={store.precioinventarioedi} type="text" placeholder="Precio" onChange={(e) => actions.capturaCampos(e)}></input>
+                                                                                    <input type="text" name="precioinventarioedi" className="form-control" placeholder={store.inventario[posicion].precioinventario} value={store.precioinventarioedi} type="text" onChange={(e) => actions.capturaCampos(e)}></input>
                                                                                 </div>
                                                                                 <div className="col">
                                                                                     <th scope="col">Fecha</th>
-                                                                                    <input type="text" name="fechainventarioedi" className="form-control" placeholder={store.inventario[posicion].fechainventario} onChange={(e) => actions.capturaCampos(e)}></input>
+                                                                                    <input type="text" name="fechainventarioedi" className="form-control" placeholder={store.inventario[posicion].fechainventario} value={store.fechainventarioedi} onChange={(e) => actions.capturaCampos(e)}></input>
                                                                                 </div>
                                                                             </div>
                                                                         </form>
